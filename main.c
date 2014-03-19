@@ -43,6 +43,12 @@ void add_token_to_list(Token *list, Token *new_token)
     
     newPtr = malloc( sizeof( Token ) );  // create node
     
+    if ( newPtr != NULL )
+    {
+        newPtr->data = *new_token;
+        newPtr->nextPtr = NULL;
+    }
+    
     // Add new_token to the list knowing that list is a linked list.
     
 }
