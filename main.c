@@ -38,7 +38,11 @@ int main(int argc, const char * argv[])
 void add_token_to_list(Token *list, Token *new_token)
 {
     Token newPtr; // pointer to new node
+    Token previousPtr; // pointer to previous node
+    Token currentPtr; // pointer to current node
+    
     newPtr = malloc( sizeof( Token ) );  // create node
+    
     // Add new_token to the list knowing that list is a linked list.
     
 }
