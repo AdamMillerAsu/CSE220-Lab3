@@ -60,7 +60,9 @@ LiteralType;
  ***************/
 typedef struct
 {
-    //Missing code goes here
+    char data[MAX_TOKEN_STRING_LENGTH];
+    Token *nextnode;
+    
 }
 Token;
 
