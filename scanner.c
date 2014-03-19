@@ -16,7 +16,7 @@
  ******************/
 static ??? get_char(???);
 static ??? skip_comment(???);
-static ??? skip_blanks(???);
+static void skip_blanks(???);
 static ??? get_word(???);
 static ??? get_number(???);
 static ??? get_string(???);
@@ -93,13 +93,17 @@ Token* get_token()
     char ch; //This can be the current character you are examining during scanning.
     char token_string[MAX_TOKEN_STRING_LENGTH]; //Store your token here as you build it.
     char *token_ptr = ???; //write some code to point this to the beginning of token_string
-    ???;  //I am missing the most important variable in the function, what is it?  Hint: what should I return?
+    
+    Token Token1;
+    //???;  //I am missing the most important variable in the function, what is it?  Hint: what should I return?
     
     //1.  Skip past all of the blanks
+    skip_blanks();
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
+    
     //3.  Call the appropriate function to deal with the cases in 2.
     
-    return Token; //What should be returned here?
+    return Token1; //What should be returned here?
 }
 static ??? get_char(???)
 {
@@ -113,12 +117,26 @@ static ??? get_char(???)
      Write some code to set the character ch to the next character in the buffer
      */
 }
-static ??? skip_blanks(???)
+static void skip_blanks(char stringwithspaces[])
 {
-    /*
-     Write some code to skip past the blanks in the program and return a pointer
-     to the first non blank character
-     */
+
+    
+    
+    //char testString[]="   adfaf";
+    //puts(testString);
+    char *str=stringwithspaces;
+    //char *strPtr;
+    //    strcpy(testString,"         hih");
+    int i;
+    for (i=0;stringwithspaces[i]==' ';i++)
+    {}
+    //*str=testString;
+    str=str+i;
+    strcpy(stringwithspaces,str);
+    //puts(testString);
+    
+    
+    
     
 }
 static ??? skip_comment(???)

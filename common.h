@@ -61,6 +61,7 @@ LiteralType;
 typedef struct
 {
     char data[MAX_TOKEN_STRING_LENGTH];
+    char typeOfData[MAX_TOKEN_STRING_LENGTH];
     Token *nextnode;
     
 }
