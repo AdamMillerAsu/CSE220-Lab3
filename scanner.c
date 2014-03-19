@@ -99,7 +99,7 @@ Token* get_token()
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
     //3.  Call the appropriate function to deal with the cases in 2.
     
-    return ???; //What should be returned here?
+    return Token; //What should be returned here?
 }
 static ??? get_char(???)
 {
