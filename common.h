@@ -60,8 +60,9 @@ LiteralType;
  ***************/
 typedef struct
 {
-    char data[MAX_TOKEN_STRING_LENGTH];
-    char typeOfData[MAX_TOKEN_STRING_LENGTH];
+    char LiteralValue[MAX_TOKEN_STRING_LENGTH];
+    LiteralType typeOfLiteral;
+    TokenCode tokenCode;
     Token *nextnode;
     
 }
