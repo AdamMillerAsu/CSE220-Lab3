@@ -14,7 +14,7 @@
  You need to design the proper parameter list and 
  return types for functions with ???.
  ******************/
-static ??? get_char(???);
+static char get_char(???);
 static ??? skip_comment(???);
 static void skip_blanks(???);
 static ??? get_word(???);
@@ -38,6 +38,7 @@ static FILE *src_file;
 static char src_name[MAX_FILE_NAME_LENGTH];
 static char todays_date[DATE_STRING_LENGTH];
 static CharCode char_table[256];  // The character table
+//char sourceline[MAX_TOKEN_STRING_LENGTH];
 
 typedef struct
 {
@@ -81,6 +82,7 @@ BOOLEAN get_source_line(char source_buffer[])
         ++line_number;
         sprintf(print_buffer, "%4d: %s", line_number, source_buffer);
         print_line(print_buffer, src_name, todays_date);
+        //strcpy(sourceline,source_buffer);
         return (TRUE);
     }
     else
@@ -92,21 +94,30 @@ Token* get_token()
 {
     char ch; //This can be the current character you are examining during scanning.
     char token_string[MAX_TOKEN_STRING_LENGTH]; //Store your token here as you build it.
-    char *token_ptr = ???; //write some code to point this to the beginning of token_string
+    char *token_ptr =???; //write some code to point this to the beginning of token_string
+    char source_buffer[MAX_TOKEN_STRING_LENGTH];
+    
+    
     
     Token Token1;
     //???;  //I am missing the most important variable in the function, what is it?  Hint: what should I return?
+    if (ch=='\n'){get_source_line(source_buffer);}
     
     //1.  Skip past all of the blanks
-    skip_blanks();
-    //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
     
+    skip_blanks(source_buffer);
+    //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
+    ch=get_char(source_buffer);
     //3.  Call the appropriate function to deal with the cases in 2.
     
     return Token1; //What should be returned here?
 }
-static ??? get_char(???)
+static char get_char(char stringwithOutSpaces)
 {
+    if(stringwithOutSpaces[0]=='\n')
+    {get_source_line();}
+    else if (stringwithOutSpaces[0]=='EOF'){return 'EOF'};
+    else if (stringwithOutSpaces[])
     /*
      If at the end of the current line (how do you check for that?),
      we should call get source line.  If at the EOF (end of file) we should
