@@ -195,11 +195,12 @@ static ??? get_special(???)
      some are double-character.  Set the token appropriately.
      */
 }
-static ??? downshift_word(???)
+static void downshift_word(???)
 {
     /*
      Make all of the characters in the incoming word lower case.
      */
+     
 }
 static BOOLEAN is_reserved_word(???)
 {
