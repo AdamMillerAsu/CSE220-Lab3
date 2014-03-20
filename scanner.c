@@ -15,15 +15,15 @@
  You need to design the proper parameter list and 
  return types for functions with ???.
  ******************/
-static char get_char(???);
-static ??? skip_comment(???);
-static void skip_blanks(???);
-static ??? get_word(???);
-static ??? get_number(???);
-static ??? get_string(???);
-static ??? get_special(???);
-static ??? downshift_word(???);
-static BOOLEAN is_reserved_word(???);
+static char get_char(char);
+static char skip_comment(char);
+static void skip_blanks(char);
+static Token get_word(char);
+static Token get_number(char);
+static Token get_string(char);
+static Token get_special(char);
+static char downshift_word(char);
+static BOOLEAN is_reserved_word(char);
 char sourceLine[MAX_TOKEN_STRING_LENGTH];
 
 typedef enum
@@ -133,7 +133,7 @@ Token* get_token()
     strcpy(sourceline,source_buffer);
     return Token1; //What should be returned here?
 }
-static char get_char(char stringwithOutSpaces)
+static char *get_char(char stringwithOutSpaces)
 {
     
     return stringwithOutSpaces[0];
@@ -174,14 +174,14 @@ static void skip_blanks(char stringwithspaces[])
     
     
 }
-static void skip_comment(char stringwithcomment[])
+static char *skip_comment(char stringwithcomment[])
 {
     /*
      Write some code to skip past the comments in the program and return a pointer
      to the first non blank character.  Watch out for the EOF character.
      */
 }
-static void get_word(char stringwithuppercase[])
+static char *get_word(char stringwithuppercase[])
 {
     /*
      Write some code to Extract the word
@@ -194,33 +194,33 @@ static void get_word(char stringwithuppercase[])
      if it is not a reserved word its an identifier.
      */
 }
-static void get_number(char stringnum[])
+static Token *get_number(char stringnum[])
 {
     /*
      Write some code to Extract the number and convert it to a literal number.
      */
 }
-static void get_string(char string)
+static Token *get_string(char string)
 {
     /*
      Write some code to Extract the string
      */
 }
-static ??? get_special(???)
+static Token *get_special(???)
 {
     /*
      Write some code to Extract the special token.  Most are single-character
      some are double-character.  Set the token appropriately.
      */
 }
-static void downshift_word(???)
+static char *downshift_word(char stringuppercase[])
 {
     /*
      Make all of the characters in the incoming word lower case.
      */
      
 }
-static BOOLEAN is_reserved_word(???)
+static BOOLEAN is_reserved_word(char stringsearchword[])
 {
     /*
      Examine the reserved word table and determine if the function input is a reserved word.
