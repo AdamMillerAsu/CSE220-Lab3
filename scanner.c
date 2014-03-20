@@ -174,14 +174,14 @@ static void skip_blanks(char stringwithspaces[])
     
     
 }
-static ??? skip_comment(???)
+static void skip_comment(char stringwithcomment[])
 {
     /*
      Write some code to skip past the comments in the program and return a pointer
      to the first non blank character.  Watch out for the EOF character.
      */
 }
-static ??? get_word(???)
+static void get_word(char stringwithuppercase[])
 {
     /*
      Write some code to Extract the word
@@ -194,13 +194,13 @@ static ??? get_word(???)
      if it is not a reserved word its an identifier.
      */
 }
-static ??? get_number(???)
+static void get_number(char stringnum[])
 {
     /*
      Write some code to Extract the number and convert it to a literal number.
      */
 }
-static ??? get_string(???)
+static void get_string(char string)
 {
     /*
      Write some code to Extract the string
