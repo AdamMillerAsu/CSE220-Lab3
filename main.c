@@ -37,23 +37,29 @@ int main(int argc, const char * argv[])
 }
 void add_token_to_list(Token *list, Token *new_token)
 {
-    Token newPtr; // pointer to new node
-    Token previousPtr; // pointer to previous node
-    Token currentPtr; // pointer to current node
-    
-    newPtr = malloc( sizeof( Token ) );  // create node
-    
-    if ( newPtr != NULL )
-    {
-        newPtr->data = *new_token;
-        newPtr->nextPtr = NULL;
-    }
+   Token *current = head;
+   
+   while (current->next != NULL)
+   {
+       current = current->next;
+   }
+   
+   current->next = malloc(sizeof(Token));
+   current->next->new_token = new_token;
+   current->next->next = NULL;
     
     // Add new_token to the list knowing that list is a linked list.
     
 }
 void quit_scanner(FILE *src_file, Token *list)
 {
+    Token *temp;
+    while (list != NULL)
+    {
+        temp = list;
+        list = list->next;
+        free(temp);
+    }
     //write code to free all of the memory for the token list
 
     fclose(src_file);
