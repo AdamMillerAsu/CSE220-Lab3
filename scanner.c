@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include "scanner.h"
+#include <ctype.h>
 
 /*******************
  Static functions needed for the scanner
@@ -23,6 +24,7 @@ static ??? get_string(???);
 static ??? get_special(???);
 static ??? downshift_word(???);
 static BOOLEAN is_reserved_word(???);
+char sourceLine[MAX_TOKEN_STRING_LENGTH];
 
 typedef enum
 {
@@ -97,11 +99,12 @@ Token* get_token()
     char *token_ptr =???; //write some code to point this to the beginning of token_string
     char source_buffer[MAX_TOKEN_STRING_LENGTH];
     
+    get_source_line(source_buffer);
     
     
     Token Token1;
     //???;  //I am missing the most important variable in the function, what is it?  Hint: what should I return?
-    if (ch=='\n'){get_source_line(source_buffer);}
+    
     
     //1.  Skip past all of the blanks
     
@@ -109,15 +112,18 @@ Token* get_token()
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
     ch=get_char(source_buffer);
     //3.  Call the appropriate function to deal with the cases in 2.
-    
+    strcpy(sourceline,source_buffer);
     return Token1; //What should be returned here?
 }
 static char get_char(char stringwithOutSpaces)
 {
-    if(stringwithOutSpaces[0]=='\n')
-    {get_source_line();}
+    
+    return stringwithOutSpaces[0];
+    /*if(stringwithOutSpaces[0]=='\n')
+    {}
+    }
     else if (stringwithOutSpaces[0]=='EOF'){return 'EOF'};
-    else if (stringwithOutSpaces[])
+    else if (isdigit(stringwithOutSpaces[0]))
     /*
      If at the end of the current line (how do you check for that?),
      we should call get source line.  If at the EOF (end of file) we should
