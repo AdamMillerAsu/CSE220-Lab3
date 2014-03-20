@@ -180,6 +180,15 @@ static char *skip_comment(char stringwithcomment[])
      Write some code to skip past the comments in the program and return a pointer
      to the first non blank character.  Watch out for the EOF character.
      */
+     char stringwithoutcomment[];
+     for(i = 0; i < strlen(stringwithcomment) - 2; i++)
+     {
+         if(stringwithcomment[i] == '/' && stringwithcomment[i+1] == '/')
+             stringwithoutcomment[i] = '\0';
+         else
+             stringwithoutcomment[i] = stringwithcomment[i];
+     }
+     return stringwithoutcomment;
 }
 static char *get_word(char stringwithuppercase[])
 {
