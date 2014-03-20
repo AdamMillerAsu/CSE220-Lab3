@@ -220,13 +220,26 @@ static Token *get_number(char stringnum[])
     addtoken.typeOfLiteral = setliteraltype;
     return addtoken;
 }
-static Token *get_string(char string)
+static Token *get_string(char stringwithquotes[])
 {
     /*
      Write some code to Extract the string
      */
+    Token addstring = malloc(sizeof(addstring)); // create new STRING Token
+    enum LiteralType setliteraltype = STRING_LIT;
+    enum TokenCode settokencode = STRING;
+    addstring.typeOfLiteral = setliteraltype;
+    addstring.tokenCode = settokencode;
+    
+    char stringwithoutquotes[strlen(stringwithquotes)-2];
+    for(i = 0; i < strlen(stringwithoutquotes); i++)
+    {
+        stringwithoutquotes[i] = stringwithoutquotes[i+1];
+    }
+    strcpy(addstring.LiteralValue,stringwithoutquotes);
+    return addstring;
 }
-static Token *get_special(???)
+static Token *get_special(char stringspecial[])
 {
     /*
      Write some code to Extract the special token.  Most are single-character
@@ -238,6 +251,13 @@ static char *downshift_word(char stringuppercase[])
     /*
      Make all of the characters in the incoming word lower case.
      */
+    char stringlowercase[];
+    strcpy(stringlowercase, stringuppercase);
+    for(i=0; i<strlen(stringlowercase); i++)
+    {
+        stringlowercase[i] = tolower(stringlowercase[i]);
+    }
+    return stringlowercase;
      
 }
 static BOOLEAN is_reserved_word(char stringsearchword[])
