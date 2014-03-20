@@ -199,6 +199,26 @@ static Token *get_number(char stringnum[])
     /*
      Write some code to Extract the number and convert it to a literal number.
      */
+    int numlength = strlen(stringnum);
+    int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
+    char currentchar;
+    
+    Token addtoken = new Token; // create new NUMBER Token
+    enum TokenCode settokencode = NUMBER;
+    enum LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
+    addtoken.tokencode = settokencode;             // with default as integer
+    addtoken.LiteralValue = stringnum;
+    while(i=0; i<numlength; i++)
+    {
+        currentchar = stringnum[i];
+        if(currentchar == 'e' || currentchar == '.') // check for real number
+        {
+            enum LiteralType setliteraltype = REAL _LIT;
+            i = i + numlength; // exits while loop
+        }
+    }
+    addtoken.typeOfLiteral = setliteraltype;
+    return addtoken;
 }
 static Token *get_string(char string)
 {
