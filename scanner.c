@@ -99,7 +99,9 @@ Token* get_token()
     char *token_ptr =???; //write some code to point this to the beginning of token_string
     char source_buffer[MAX_TOKEN_STRING_LENGTH];
     
-    get_source_line(source_buffer);
+    
+    if(sourceline[0]=='\n');
+    {get_source_line(source_buffer);}
     
     
     Token Token1;
@@ -111,6 +113,22 @@ Token* get_token()
     skip_blanks(source_buffer);
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
     ch=get_char(source_buffer);
+        if (ch=='\n');
+        {
+            {get_source_line(source_buffer);}
+            skip_blanks(source_buffer);
+            ch=get_char(source_buffer);
+            
+        }
+        else if (isdigit(ch));
+        {
+            get_number();
+        }
+        else if (isalpha(ch));
+        {
+            get_word();
+        }
+    
     //3.  Call the appropriate function to deal with the cases in 2.
     strcpy(sourceline,source_buffer);
     return Token1; //What should be returned here?
