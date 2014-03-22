@@ -95,8 +95,9 @@ BOOLEAN get_source_line(char source_buffer[])
 Token* get_token()
 {
     char ch; //This can be the current character you are examining during scanning.
+    int chint;
     char token_string[MAX_TOKEN_STRING_LENGTH]; //Store your token here as you build it.
-    char *token_ptr =???; //write some code to point this to the beginning of token_string
+    char *token_ptr =token_string; //write some code to point this to the beginning of token_string
     char source_buffer[MAX_TOKEN_STRING_LENGTH];
     
     
@@ -113,20 +114,21 @@ Token* get_token()
     
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
     ch=get_char(source_buffer);
-        if (ch=='\n');
+    chint=(int)ch;
+        if (ch=='\n')
         {
             {get_source_line(source_buffer);}
             skip_blanks(source_buffer);
             ch=get_char(source_buffer);
             
         }
-        else if (isdigit(ch));
+        else if (isdigit(chint))
         {
-            get_number();
+            get_number(source_buffer);
         }
-        else if (isalpha(ch));
+        else if (isalpha(chint))
         {
-            get_word();
+            get_word(source_buffer);
         }
     
     //3.  Call the appropriate function to deal with the cases in 2.
@@ -135,14 +137,15 @@ Token* get_token()
 }
 static char *get_char(char stringwithOutSpaces[])
 {
-    
-    if(sourceLine[0]=='\n');
+    char returnchar;
+    if(sourceLine[0]=='\n')
     {
     get_source_line(source_buffer);
     }
-    skip_blanks(stringwithOutSpaces[]);
-    skip_comment(stringwithOutSpaces[]);
-    return stringwithOutSpaces[0];
+    skip_blanks(stringwithOutSpaces);
+    skip_comment(stringwithOutSpaces);
+    returnchar=stringwithOutSpaces[0];
+    return returnchar;
     /*if(stringwithOutSpaces[0]=='\n')
     {}
     }
@@ -201,9 +204,10 @@ static void skip_comment(char stringwithcomment[])
     //Sorry this is wrong as comments are cretaed in pascel with '{' and end with '}'
     if(stringwithcomment[0] == '{')
     {
-        for(i = 0; stringwithcomment[i]!='}' || stringwithcomment[i]!='\n'); i++)
+        int i;
+        for(i = 0; stringwithcomment[i]!='}' || stringwithcomment[i]!='\n'; i++)
         {}
-        strcpy(stringwithcomment,stringwithcomment[i];
+        strcpy(stringwithcomment,stringwithcomment[i]);
     
     }
     
@@ -236,12 +240,13 @@ static Token *get_number(char stringnum[])
     enum LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
     addtoken.tokencode = settokencode;             // with default as integer
     addtoken.LiteralValue = stringnum;
+    int i;
     while(i=0; i<numlength; i++)
     {
         currentchar = stringnum[i];
         if(currentchar == 'e' || currentchar == '.') // check for real number
         {
-            enum LiteralType setliteraltype = REAL _LIT;
+            enum LiteralType setliteraltype = REAL_LIT;
             i = i + numlength; // exits while loop
         }
     }
