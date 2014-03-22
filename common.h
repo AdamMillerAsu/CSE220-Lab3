@@ -63,7 +63,7 @@ typedef struct
     char LiteralValue[MAX_TOKEN_STRING_LENGTH];
     LiteralType typeOfLiteral;
     TokenCode tokenCode;
-    Token *nextnode;
+    struct Token *next;
     
 }
 Token;
