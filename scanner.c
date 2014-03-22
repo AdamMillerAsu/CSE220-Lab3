@@ -136,6 +136,7 @@ Token* get_token()
 static char *get_char(char stringwithOutSpaces)
 {
     
+    
     return stringwithOutSpaces[0];
     /*if(stringwithOutSpaces[0]=='\n')
     {}
@@ -174,13 +175,15 @@ static void skip_blanks(char stringwithspaces[])
     
     
 }
-static char *skip_comment(char stringwithcomment[])
+static void *skip_comment(char stringwithcomment[])
 {
     /*
      Write some code to skip past the comments in the program and return a pointer
      to the first non blank character.  Watch out for the EOF character.
      */
-     char stringwithoutcomment[];
+    
+    /*
+    char stringwithoutcomment[];
      for(i = 0; i < strlen(stringwithcomment) - 2; i++)
      {
          if(stringwithcomment[i] == '/' && stringwithcomment[i+1] == '/')
@@ -189,6 +192,17 @@ static char *skip_comment(char stringwithcomment[])
              stringwithoutcomment[i] = stringwithcomment[i];
      }
      return stringwithoutcomment;
+     */
+    //Sorry this is wrong as comments are cretaed in pascel with '{' and end with '}'
+    if(stringwithcomment[0] == '{')
+    {
+        for(i = 0; stringwithcomment[i]!='}' || stringwithcomment[i]!='\n'); i++)
+        {}
+        strcpy(stringwithcomment,stringwithcomment[i];
+    
+    }
+    
+     
 }
 static char *get_word(char stringwithuppercase[])
 {
