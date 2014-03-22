@@ -100,8 +100,8 @@ Token* get_token()
     char source_buffer[MAX_TOKEN_STRING_LENGTH];
     
     
-    if(sourceline[0]=='\n');
-    {get_source_line(source_buffer);}
+    //if(sourceline[0]=='\n');
+    //{get_source_line(source_buffer);}
     
     
     Token Token1;
@@ -110,7 +110,7 @@ Token* get_token()
     
     //1.  Skip past all of the blanks
     
-    skip_blanks(source_buffer);
+    
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
     ch=get_char(source_buffer);
         if (ch=='\n');
@@ -133,10 +133,15 @@ Token* get_token()
     strcpy(sourceline,source_buffer);
     return Token1; //What should be returned here?
 }
-static char *get_char(char stringwithOutSpaces)
+static char *get_char(char stringwithOutSpaces[])
 {
     
-    
+    if(sourceLine[0]=='\n');
+    {
+    get_source_line(source_buffer);
+    }
+    skip_blanks(stringwithOutSpaces[]);
+    skip_comment(stringwithOutSpaces[]);
     return stringwithOutSpaces[0];
     /*if(stringwithOutSpaces[0]=='\n')
     {}
@@ -175,7 +180,7 @@ static void skip_blanks(char stringwithspaces[])
     
     
 }
-static void *skip_comment(char stringwithcomment[])
+static void skip_comment(char stringwithcomment[])
 {
     /*
      Write some code to skip past the comments in the program and return a pointer
