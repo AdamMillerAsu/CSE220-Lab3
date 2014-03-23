@@ -297,6 +297,69 @@ static void get_special(char stringspecial[])
      Write some code to Extract the special token.  Most are single-character
      some are double-character.  Set the token appropriately.
      */
+    int chint = stringsearchword[0];
+    struct Token addtoken = malloc(sizeof(struct Token));
+    TokenCode settokencode;
+    switch(chint) // set TokenCode
+    {
+        case 94:
+            settokencode = UPARROW;
+            break;
+        case 42:
+            settokencode = STAR;
+            break;
+        case 40:
+            settokencode = LPAREN;
+            break;
+        case 41:
+            settokencode = RPAREN;
+            break;
+        case 45:
+            settokencode = MINUS;
+            break;
+        case 91:
+            settokencode = LBRACKET;
+            break;
+        case 93:
+            settokencode = RBRACKET;
+            break;
+        case 58:
+            if(stringseachword[1] == '=')
+                settokencode = COLONEQUAL;
+            else
+                settokencode = COLON;
+            break;
+        case 59:
+            settokencode = SEMICOLON;
+            break
+        case 60:
+            if(stringsearchword[1] == '=')
+                settokencode = LE;
+            else
+                settokencode = LT;
+            break;
+        case 62:
+            if(stringsearchword[1] == '=')
+                settokencode = GE;
+            else
+                settokencode = GT;
+            break
+        case 44:
+            settokencode = COMMA;
+            break;
+        case 46:
+            if(stringsearchword[1] == '.')
+                settokencode = DOTDOT;
+            else
+                settokencode = PERIOD;
+            break;
+        case 47:
+            settokencode = SLASH;
+            break;
+    }
+    addtoken.tokenCode = settokencode;
+    addtoken.LiteralValue = stringsearchword;
+    retun addtoken; 
 }
 static void downshift_word(char stringuppercase[])
 {
