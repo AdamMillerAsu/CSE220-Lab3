@@ -14,6 +14,8 @@
 FILE *init_lister(const char *name, char source_file_name[], char dte[]);
 void quit_scanner(FILE *src_file, Token *list);
 void add_token_to_list(Token *list, Token *new_token);
+char source_buffer[80];
+char wordToken[80];
 
 int main(int argc, const char * argv[])
 {
@@ -24,13 +26,32 @@ int main(int argc, const char * argv[])
     FILE *source_file = init_lister(argv[1], source_name, date);
     init_scanner(source_file, source_name, date);
     
-    do
-    {
-        token = get_token();
-        add_token_to_list(token_list, token);
-        print_token(token);
-    }
-    while (token != ".");//What is the sentinal value that ends this loop?
+    do{
+        
+        if (source_buffer[0]=='\n')
+        {
+            get_source_line(source_buffer);
+            skip_blanks(source_buffer);
+            skip_comment(source_buffer);
+        }
+        
+        
+        int i;
+        for(i=0;source_buffer[i]!=' ';++i)
+        {
+            wordToken[i]=source_buffer[i];
+        }
+        wordToken[i]='\0';
+        
+        do
+    	{
+            token = get_token(wordToken);
+            add_token_to_list(token_list, token);
+            print_token(token);
+    	}
+    	while (token != ".");//What is the sentinal value that ends this loop?
+        
+    }while(wordToken[0]!=' ' || wordToken[0]!='eof' || wordToken[0]!='.');
     
     quit_scanner(source_file, token_list);
     return 0;
