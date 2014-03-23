@@ -19,8 +19,8 @@ static char get_char(char*);
 static void skip_comment(char*);
 static void skip_blanks(char*);
 static void get_word(char*,char *);
-static void get_number(char*);
-static void get_string(char*);
+static void get_number(char*, char*);
+static void get_string(char *,char *);
 static void get_special(char*);
 static void downshift_word(char*);
 static BOOLEAN is_reserved_word(char*);
@@ -165,24 +165,13 @@ static char get_char(char stringwithOutSpaces[])
 static void skip_blanks(char stringwithspaces[])
 {
     
-    
-    
-    //char testString[]="   adfaf";
-    //puts(testString);
     char *str=stringwithspaces;
-    //char *strPtr;
-    //    strcpy(testString,"         hih");
     int i;
     for (i=0;stringwithspaces[i]==' ';i++)
     {}
-    //*str=testString;
+    
     str=str+i;
     strcpy(stringwithspaces,str);
-    //puts(testString);
-    
-    
-    
-    
 }
 static void skip_comment(char stringwithcomment[])
 {
@@ -232,37 +221,49 @@ static void get_word(char stringwithuppercase[], char resultWord[])
 		resultWord[i]=stringwithuppercase[i];
 	}
 	resultWord[i+1]='\0';
-	downshit(resultWord);
+	downshit_word(resultWord);
     
 }
-static void get_number(char stringnum[])
+static int get_number(char stringnum[],char resultNum[])
 {
+    
+	char WordNumber[];
+	char *saveptr;
+	WordNumber=strtok_r(stringnum,' ',saveptr);
+    
+    
     /*
      Write some code to Extract the number and convert it to a literal number.
      */
-    // int numlength = strlen(stringnum);
-    // int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
-    // char currentchar;
+    int numlength = strlen(WordNumber);
+    int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
+    char currentchar;
     
     // Token addtoken = malloc(sizeof(Token)); // create new NUMBER Token
     // enum TokenCode settokencode = NUMBER;
     //enum LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
     //addtoken.tokenCode = settokencode;             // with default as integer
     //addtoken.LiteralValue = stringnum;
-    // int i;
-    // while(i=0; i<numlength; i++)
-    // {
-    //     currentchar = stringnum[i];
-    //    if(currentchar == 'e' || currentchar == '.') // check for real number
-    //    {
-    //        enum LiteralType setliteraltype = REAL_LIT;
-    //        i = i + numlength; // exits while loop
-    //    }
-    // }
+    int i;
+    for(i=0; i<numlength; i++)
+    {
+        currentchar = WordNumber[i];
+        if(currentchar == 'e' || currentchar == '.') // check for real number
+        {
+            //enum LiteralType setliteraltype = REAL_LIT;
+            i = i + numlength; // exits while loop
+            realorint=1;
+        }
+        
+    }
+    strcpy(resultNum,WordNumber);
     // addtoken.typeOfLiteral = setliteraltype;
-    // return addtoken;
+    return realorint;
+    
+    
+    
 }
-static void get_string(char stringwithquotes[])
+static void get_string(char stringwithquotes[], char resultString[])
 {
     /*
      Write some code to Extract the string
@@ -273,13 +274,17 @@ static void get_string(char stringwithquotes[])
     // addstring.typeOfLiteral = setliteraltype;
     // addstring.tokenCode = settokencode;
     
-    //   char stringwithoutquotes[strlen(stringwithquotes)-2];
-    // for(int i = 0; i < strlen(stringwithoutquotes); i++)
-    //  {
-    //     stringwithoutquotes[i] = stringwithoutquotes[i+1];
-    // }
-    // strcpy(addstring.LiteralValue,stringwithoutquotes);
-    // return addstring;
+    char stringwithoutquotes[strlen(stringwithquotes)-2];
+    int i;
+    for(i = 0; stringwithquotes[i]!='\'' || i!=1; ++i)
+    {
+        stringwithoutquotes[i] = stringwithquotes[i+1];
+    }
+    stringwithoutquotes[i+1]='\0';
+    strcpy(resultString,stringwithoutquotes);
+    
+    //strcpy(stringwithquotes,stringwithoutquotes);
+    
 }
 static void get_special(char stringspecial[])
 {
