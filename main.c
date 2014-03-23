@@ -42,6 +42,7 @@ int main(int argc, const char * argv[])
             wordToken[i]=source_buffer[i];
         }
         wordToken[i]='\0';
+        sprintf(source_buffer,%s,&source_buffer[i]);
         
         do
     	{
