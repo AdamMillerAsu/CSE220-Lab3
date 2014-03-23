@@ -19,7 +19,7 @@ static char get_char(char*);
 static void skip_comment(char*);
 static void skip_blanks(char*);
 static void get_word(char*,char *);
-static void get_number(char*, char*);
+static int get_number(char*, char*);
 static void get_string(char *,char *);
 static void get_special(char*);
 static void downshift_word(char*);
@@ -99,7 +99,7 @@ Token* get_token()
     char token_string[MAX_TOKEN_STRING_LENGTH]; //Store your token here as you build it.
     char *token_ptr =token_string; //write some code to point this to the beginning of token_string
     char source_buffer[MAX_TOKEN_STRING_LENGTH];
-    
+    char resultWord[80];
     
     //if(sourceline[0]=='\n');
     //{get_source_line(source_buffer);}
@@ -124,11 +124,12 @@ Token* get_token()
     }
     else if (isdigit(chint))
     {
-        get_number(source_buffer);
+        
+        get_number(source_buffer,resultWord);
     }
     else if (isalpha(chint))
     {
-        char resultWord[80];
+        //char resultWord[80];
         get_word(source_buffer, resultWord);
     }
     
@@ -227,9 +228,9 @@ static void get_word(char stringwithuppercase[], char resultWord[])
 static int get_number(char stringnum[],char resultNum[])
 {
     
-	char WordNumber[];
+	char WordNumber[80];
 	char *saveptr;
-	WordNumber=strtok_r(stringnum,' ',saveptr);
+	strcpy(WordNumber,strtok_r(stringnum,' ',saveptr));
     
     
     /*
