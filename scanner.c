@@ -18,10 +18,10 @@
 static char get_char(char*);
 static void skip_comment(char*);
 static void skip_blanks(char*);
-static *Token get_word(char*,);
-static *Token get_number(char*,);
-static *Token get_string(char *,);
-static *Token get_special(char*);
+static struct *Token get_word(char*);
+static struct *Token get_number(char*,);
+static struct *Token get_string(char *,);
+static struct *Token get_special(char*);
 static void downshift_word(char*);
 static BOOLEAN is_reserved_word(char*);
 char sourceLine[MAX_TOKEN_STRING_LENGTH];
@@ -195,7 +195,7 @@ static void skip_comment(char stringwithcomment[])
     
     
 }
-static *Token get_word(char stringwithuppercase[])
+static struct *Token get_word(char stringwithuppercase[])
 {
     /*
      Write some code to Extract the word
@@ -226,7 +226,7 @@ static *Token get_word(char stringwithuppercase[])
         addtoken.LiteralValue = stringwithoutuppercase;
         return addtoken;
 }
-static *Token get_number(char stringnum[])
+static struct *Token get_number(char stringnum[])
 {
     
 	//char WordNumber[80];
@@ -264,7 +264,7 @@ static *Token get_number(char stringnum[])
     
     
 }
-static *Token get_string(char stringwithquotes[])
+static struct*Token get_string(char stringwithquotes[])
 {
     /*
      Write some code to Extract the string
@@ -291,7 +291,7 @@ static void get_special(char stringspecial[])
      */
     
 }
-static void get_special(char stringspecial[])
+static struct *Token get_special(char stringspecial[])
 {
     /*
      Write some code to Extract the special token.  Most are single-character
