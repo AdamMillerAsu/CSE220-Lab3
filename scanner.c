@@ -18,10 +18,10 @@
 static char get_char(char*);
 static void skip_comment(char*);
 static void skip_blanks(char*);
-static void get_word(char*,char *);
-static int get_number(char*, char*);
-static void get_string(char *,char *);
-static void get_special(char*);
+static *Token get_word(char*,);
+static *Token get_number(char*,);
+static *Token get_string(char *,);
+static *Token get_special(char*);
 static void downshift_word(char*);
 static BOOLEAN is_reserved_word(char*);
 char sourceLine[MAX_TOKEN_STRING_LENGTH];
@@ -92,50 +92,32 @@ BOOLEAN get_source_line(char source_buffer[])
         return (FALSE);
     }
 }
-Token* get_token()
+Token* get_token(char *stringtotoken)
 {
-    char ch; //This can be the current character you are examining during scanning.
-    int chint;
+    char source_buffer[MAX_TOKEN_STRING_LENGTH];
+    char ch = source_buffer[0]; //This can be the current character you are examining during scanning.
+    int chint = (int)ch;
     char token_string[MAX_TOKEN_STRING_LENGTH]; //Store your token here as you build it.
     char *token_ptr =token_string; //write some code to point this to the beginning of token_string
-    char source_buffer[MAX_TOKEN_STRING_LENGTH];
-    char resultWord[80];
     
     //if(sourceline[0]=='\n');
     //{get_source_line(source_buffer);}
     
     
-    Token Token1;
+    struct Token token1;
     //???;  //I am missing the most important variable in the function, what is it?  Hint: what should I return?
     
-    
-    //1.  Skip past all of the blanks
-    
-    
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
-    ch=get_char(source_buffer);
-    chint=(int)ch;
-    if (ch=='\n')
-    {
-        {get_source_line(source_buffer);}
-        skip_blanks(source_buffer);
-        ch=get_char(source_buffer);
-        
-    }
-    else if (isdigit(chint))
-    {
-        
-        get_number(source_buffer,resultWord);
-    }
-    else if (isalpha(chint))
-    {
-        //char resultWord[80];
-        get_word(source_buffer, resultWord);
-    }
+    if (isdigit(chint))
+        token1 = get_number(source_buffer);
+    if (isalpha(chint))
+        token1 =get_word(source_buffer);
+    if (chint == 39)
+        token1 = get_string(source_buffer);
     
     //3.  Call the appropriate function to deal with the cases in 2.
     strcpy(sourceLine,source_buffer);
-    return &Token1; //What should be returned here?
+    return &token1; //What should be returned here?
 }
 static char get_char(char stringwithOutSpaces[])
 {
@@ -204,7 +186,7 @@ static void skip_comment(char stringwithcomment[])
     
     
 }
-static void get_word(char stringwithuppercase[], char resultWord[])
+static *Token get_word(char stringwithuppercase[])
 {
     /*
      Write some code to Extract the word
@@ -216,75 +198,88 @@ static void get_word(char stringwithuppercase[], char resultWord[])
      Write some code to Check if the word is a reserved word.
      if it is not a reserved word its an identifier.
      */
-	int i;
-	for( i=0; stringwithuppercase[i]!=' ';i++ )
-	{
-		resultWord[i]=stringwithuppercase[i];
-	}
-	resultWord[i+1]='\0';
-	downshit_word(resultWord);
+        char stringwithoutuppercase[];
+        strcpy(stringwithoutuppercase))
+	downshift_word(stringwithoutuppercase);
+        struct Token addtoken = malloc(sizeof(struct Token));
+        TokenCode settokencode;
+        LiteralType setliteraltype;
     
+        for(int c = 0; c < 9; c++)
+        {
+            for(int r = 0; r < 1-0; r++)
+            {
+                if(strcmp(stringwithoutuppercase,rw_table[c][r].string == 0))
+                    settokencode = rw_table[c][r].token_code;
+            }
+        }
+        addtoken.tokenCode = sttokencode;
+        addtoken.LiteralValue = stringwithoutuppercase;
+        return addtoken;
 }
-static int get_number(char stringnum[],char resultNum[])
+static *Token get_number(char stringnum[])
 {
     
-	char WordNumber[80];
-	char *saveptr;
-	strcpy(WordNumber,strtok_r(stringnum,' ',saveptr));
+	//char WordNumber[80];
+	//char *saveptr;
+	//strcpy(WordNumber,strtok_r(stringnum,' ',saveptr));
     
     
     /*
      Write some code to Extract the number and convert it to a literal number.
      */
-    int numlength = strlen(WordNumber);
+    int numlength = strlen(stringnum);
     int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
     char currentchar;
     
-    // Token addtoken = malloc(sizeof(Token)); // create new NUMBER Token
-    // enum TokenCode settokencode = NUMBER;
-    //enum LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
-    //addtoken.tokenCode = settokencode;             // with default as integer
-    //addtoken.LiteralValue = stringnum;
+    struct Token addtoken = malloc(sizeof(struct Token)); // create new NUMBER Token
+    TokenCode settokencode = NUMBER;
+    LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
+    addtoken.tokenCode = settokencode;             // with default as integer
+    addtoken.LiteralValue = stringnum;
     int i;
     for(i=0; i<numlength; i++)
     {
-        currentchar = WordNumber[i];
+        currentchar = stringnum[i];
         if(currentchar == 'e' || currentchar == '.') // check for real number
         {
-            //enum LiteralType setliteraltype = REAL_LIT;
+            LiteralType setliteraltype = REAL_LIT;
             i = i + numlength; // exits while loop
             realorint=1;
         }
         
     }
-    strcpy(resultNum,WordNumber);
-    // addtoken.typeOfLiteral = setliteraltype;
-    return realorint;
+    addtoken.typeOfLiteral = setliteraltype;
+    return addToken;
     
     
     
 }
-static void get_string(char stringwithquotes[], char resultString[])
+static *Token get_string(char stringwithquotes[])
 {
     /*
      Write some code to Extract the string
      */
-    // Token addstring = malloc(sizeof(addstring)); // create new STRING Token
-    // enum LiteralType setliteraltype = STRING_LIT;
-    // enum TokenCode settokencode = STRING;
-    // addstring.typeOfLiteral = setliteraltype;
-    // addstring.tokenCode = settokencode;
+    struct Token addstring = malloc(sizeof(struct Token)); // create new STRING Token
+    LiteralType setliteraltype = STRING_LIT;
+    TokenCode settokencode = STRING;
+    addstring.typeOfLiteral = setliteraltype;
+    addstring.tokenCode = settokencode;
     
     char stringwithoutquotes[strlen(stringwithquotes)-2];
-    int i;
-    for(i = 0; stringwithquotes[i]!='\'' || i!=1; ++i)
+    for(i = 0; i < strlen(stringwithoutquotes); i++)
     {
-        stringwithoutquotes[i] = stringwithquotes[i+1];
+        stringwithoutquotes[i] = stringwithoutquotes[i+1];
     }
-    stringwithoutquotes[i+1]='\0';
-    strcpy(resultString,stringwithoutquotes);
-    
-    //strcpy(stringwithquotes,stringwithoutquotes);
+    strcpy(addstring.LiteralValue,stringwithoutquotes);
+    return addstring;
+ }
+static void get_special(char stringspecial[])
+{
+    /*
+     Write some code to Extract the special token.  Most are single-character
+     some are double-character.  Set the token appropriately.
+     */
     
 }
 static void get_special(char stringspecial[])
