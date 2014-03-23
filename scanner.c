@@ -109,11 +109,20 @@ Token* get_token(char *stringtotoken)
     
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
     if (isdigit(chint))
+    {
+        if (isalpha(chint))
+        {
+            token1 =get_word(source_buffer);
+        }
+        else
+        {
+            if (chint == 39)
+                token1 = get_string(source_buffer);
+        }
         token1 = get_number(source_buffer);
-    if (isalpha(chint))
-        token1 =get_word(source_buffer);
-    if (chint == 39)
-        token1 = get_string(source_buffer);
+    }
+    else
+        token1 = get_special;
     
     //3.  Call the appropriate function to deal with the cases in 2.
     strcpy(sourceLine,source_buffer);
