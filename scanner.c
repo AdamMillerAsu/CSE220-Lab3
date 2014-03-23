@@ -6,12 +6,6 @@
 //  Copyright (c) 2014 Bryce Holton. All rights reserved.
 //
 
-
-//ASUTEAM23
-//Adam Miller
-//Mike Burgett
-//Daniel Wong
-
 #include <stdio.h>
 #include "scanner.h"
 #include <ctype.h>
@@ -21,15 +15,15 @@
  You need to design the proper parameter list and
  return types for functions with ???.
  ******************/
-static char get_char(char*);
-static void skip_comment(char*);
-static void skip_blanks(char*);
-static struct *Token get_word(char*);
-static struct *Token get_number(char*);
-static struct *Token get_string(char *);
-static struct *Token get_special(char*);
-static void downshift_word(char*);
-static BOOLEAN is_reserved_word(char*);
+static char get_char(char[]);
+static void skip_comment(char[]);
+static void skip_blanks(char[]);
+static struct Token* get_word(char[], struct *Token);
+static struct Token* get_number(char[], struct *Token);
+static struct Token* get_string(char[], struct *Token);
+static struct Token* get_special(char[], struct *Token);
+static void downshift_word(char[]);
+static BOOLEAN is_reserved_word(char[]);
 char sourceLine[MAX_TOKEN_STRING_LENGTH];
 
 typedef enum
@@ -45,7 +39,7 @@ CharCode;
 static FILE *src_file;
 static char src_name[MAX_FILE_NAME_LENGTH];
 static char todays_date[DATE_STRING_LENGTH];
-static CharCode char_table[256];  // The character table
+//static CharCode char_table[256];  // The character table
 //char sourceline[MAX_TOKEN_STRING_LENGTH];
 
 typedef struct
@@ -110,7 +104,7 @@ Token* get_token(char *stringtotoken)
     //{get_source_line(source_buffer);}
     
     
-    struct Token token1;
+    struct Token token1 = malloc(sizeof(token1));
     //???;  //I am missing the most important variable in the function, what is it?  Hint: what should I return?
     
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
@@ -118,17 +112,17 @@ Token* get_token(char *stringtotoken)
     {
         if (isalpha(chint))
         {
-            token1 =get_word(source_buffer);
+            token1 =get_word(source_buffer,token1);
         }
         else
         {
             if (chint == 39)
-                token1 = get_string(source_buffer);
+                token1 = get_string(source_buffer,token1);
         }
-        token1 = get_number(source_buffer);
+        token1 = get_number(source_buffer,token1);
     }
     else
-        token1 = get_special(source_buffer);
+        token1 = get_special(source_buffer,token1);
     
     //3.  Call the appropriate function to deal with the cases in 2.
     strcpy(sourceLine,source_buffer);
@@ -201,7 +195,7 @@ static void skip_comment(char stringwithcomment[])
     
     
 }
-static struct *Token get_word(char stringwithuppercase[])
+static struct Token* get_word(char stringwithuppercase[], struct Token *addtoken)
 {
     /*
      Write some code to Extract the word
@@ -216,23 +210,23 @@ static struct *Token get_word(char stringwithuppercase[])
         char stringwithoutuppercase[];
         strcpy(stringwithoutuppercase))
 	downshift_word(stringwithoutuppercase);
-        struct Token addtoken = malloc(sizeof(struct Token));
         TokenCode settokencode;
         LiteralType setliteraltype;
     
-        for(int c = 0; c < 9; c++)
+        int i,j;
+        for(i = 0; i < 9; i++)
         {
-            for(int r = 0; r < 1-0; r++)
+            for(j = 0; j < 1-0; j++)
             {
-                if(strcmp(stringwithoutuppercase,rw_table[c][r].string == 0))
-                    settokencode = rw_table[c][r].token_code;
+                if(strcmp(stringwithoutuppercase,rw_table[i][j].string == 0))
+                    settokencode = rw_table[i][j].token_code;
             }
         }
         addtoken.tokenCode = sttokencode;
         addtoken.LiteralValue = stringwithoutuppercase;
         return addtoken;
 }
-static struct *Token get_number(char stringnum[])
+static struct Token* get_number(char stringnum[], struct Token *addtoken)
 {
     
 	//char WordNumber[80];
@@ -247,7 +241,6 @@ static struct *Token get_number(char stringnum[])
     int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
     char currentchar;
     
-    struct Token addtoken = malloc(sizeof(struct Token)); // create new NUMBER Token
     TokenCode settokencode = NUMBER;
     LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
     addtoken.tokenCode = settokencode;             // with default as integer
@@ -270,18 +263,18 @@ static struct *Token get_number(char stringnum[])
     
     
 }
-static struct*Token get_string(char stringwithquotes[])
+static struct Token* get_string(char stringwithquotes[],struct Token *addstring)
 {
     /*
      Write some code to Extract the string
      */
-    struct Token addstring = malloc(sizeof(struct Token)); // create new STRING Token
     LiteralType setliteraltype = STRING_LIT;
     TokenCode settokencode = STRING;
     addstring.typeOfLiteral = setliteraltype;
     addstring.tokenCode = settokencode;
     
     char stringwithoutquotes[strlen(stringwithquotes)-2];
+    int i;
     for(i = 0; i < strlen(stringwithoutquotes); i++)
     {
         stringwithoutquotes[i] = stringwithoutquotes[i+1];
@@ -289,22 +282,14 @@ static struct*Token get_string(char stringwithquotes[])
     strcpy(addstring.LiteralValue,stringwithoutquotes);
     return addstring;
  }
-static void get_special(char stringspecial[])
+
+static struct Token* get_special(char stringspecial[], struct Token *addtoken)
 {
     /*
      Write some code to Extract the special token.  Most are single-character
      some are double-character.  Set the token appropriately.
      */
-    
-}
-static struct *Token get_special(char stringspecial[])
-{
-    /*
-     Write some code to Extract the special token.  Most are single-character
-     some are double-character.  Set the token appropriately.
-     */
-    int chint = stringsearchword[0];
-    struct Token addtoken = malloc(sizeof(struct Token));
+    int chint = stringspecial[0];
     TokenCode settokencode;
     switch(chint) // set TokenCode
     {
@@ -337,7 +322,7 @@ static struct *Token get_special(char stringspecial[])
             break;
         case 59:
             settokencode = SEMICOLON;
-            break
+            break;
         case 60:
             if(stringsearchword[1] == '=')
                 settokencode = LE;
@@ -364,7 +349,7 @@ static struct *Token get_special(char stringspecial[])
             break;
     }
     addtoken.tokenCode = settokencode;
-    addtoken.LiteralValue = stringsearchword;
+    addtoken.LiteralValue = stringspecial;
     retun addtoken; 
 }
 static void downshift_word(char stringuppercase[])
@@ -374,7 +359,8 @@ static void downshift_word(char stringuppercase[])
      */
     char stringlowercase[80];
     strcpy(stringlowercase, stringuppercase);
-    for(int i=0; i<strlen(stringlowercase); i++)
+    int i;
+    for(i=0; i<strlen(stringlowercase); i++)
     {
         stringlowercase[i] = tolower(stringlowercase[i]);
     }
@@ -387,11 +373,12 @@ static BOOLEAN is_reserved_word(char stringsearchword[])
     /*
      Examine the reserved word table and determine if the function input is a reserved word.
      */
-    for(int c = 0; c < 9; c++)
+    int i,j;
+    for(i = 0; i < 9; i++)
         {
-            for(int r = 0; r < 1-0; r++)
+            for(j = 0; j < 1-0; j++)
             {
-                if(strcmp(stringsearchword,rw_table[c][r].string == 0))
+                if(strcmp(stringsearchword,rw_table[i][j].string == 0))
                     return TRUE;
             }
         }
