@@ -12,18 +12,18 @@
 
 /*******************
  Static functions needed for the scanner
- You need to design the proper parameter list and 
+ You need to design the proper parameter list and
  return types for functions with ???.
  ******************/
-static char get_char(char);
-static char skip_comment(char);
-static void skip_blanks(char);
-static Token get_word(char);
-static Token get_number(char);
-static Token get_string(char);
-static Token get_special(char);
-static char downshift_word(char);
-static BOOLEAN is_reserved_word(char);
+static char get_char(char*);
+static void skip_comment(char*);
+static void skip_blanks(char*);
+static void get_word(char*,char *);
+static void get_number(char*);
+static void get_string(char*);
+static void get_special(char*);
+static void downshift_word(char*);
+static BOOLEAN is_reserved_word(char*);
 char sourceLine[MAX_TOKEN_STRING_LENGTH];
 
 typedef enum
@@ -67,8 +67,8 @@ void init_scanner(FILE *source_file, char source_name[], char date[])
     strcpy(todays_date, date);
     
     /*******************
-     initialize character table, this table is useful for identifying what type of character 
-     we are looking at by setting our array up to be a copy the ascii table.  Since C thinks of 
+     initialize character table, this table is useful for identifying what type of character
+     we are looking at by setting our array up to be a copy the ascii table.  Since C thinks of
      a char as like an int you can use ch in get_token as an index into the table.
      *******************/
     
@@ -76,7 +76,7 @@ void init_scanner(FILE *source_file, char source_name[], char date[])
 BOOLEAN get_source_line(char source_buffer[])
 {
     char print_buffer[MAX_SOURCE_LINE_LENGTH + 9];
-//    char source_buffer[MAX_SOURCE_LINE_LENGTH];  //I've moved this to a function parameter.  Why did I do that?
+    //    char source_buffer[MAX_SOURCE_LINE_LENGTH];  //I've moved this to a function parameter.  Why did I do that?
     static int line_number = 0;
     
     if (fgets(source_buffer, MAX_SOURCE_LINE_LENGTH, src_file) != NULL)
@@ -115,43 +115,44 @@ Token* get_token()
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
     ch=get_char(source_buffer);
     chint=(int)ch;
-        if (ch=='\n')
-        {
-            {get_source_line(source_buffer);}
-            skip_blanks(source_buffer);
-            ch=get_char(source_buffer);
-            
-        }
-        else if (isdigit(chint))
-        {
-            get_number(source_buffer);
-        }
-        else if (isalpha(chint))
-        {
-            get_word(source_buffer);
-        }
+    if (ch=='\n')
+    {
+        {get_source_line(source_buffer);}
+        skip_blanks(source_buffer);
+        ch=get_char(source_buffer);
+        
+    }
+    else if (isdigit(chint))
+    {
+        get_number(source_buffer);
+    }
+    else if (isalpha(chint))
+    {
+        char resultWord[80];
+        get_word(source_buffer, resultWord);
+    }
     
     //3.  Call the appropriate function to deal with the cases in 2.
-    strcpy(sourceline,source_buffer);
-    return Token1; //What should be returned here?
+    strcpy(sourceLine,source_buffer);
+    return &Token1; //What should be returned here?
 }
-static char *get_char(char stringwithOutSpaces[])
+static char get_char(char stringwithOutSpaces[])
 {
     char returnchar;
     if(sourceLine[0]=='\n')
     {
-    get_source_line(source_buffer);
+        get_source_line(stringwithOutSpaces);
     }
     skip_blanks(stringwithOutSpaces);
     skip_comment(stringwithOutSpaces);
     returnchar=stringwithOutSpaces[0];
     return returnchar;
     /*if(stringwithOutSpaces[0]=='\n')
-    {}
-    }
-    else if (stringwithOutSpaces[0]=='EOF'){return 'EOF'};
-    else if (isdigit(stringwithOutSpaces[0]))
-    /*
+     {}
+     }
+     else if (stringwithOutSpaces[0]=='EOF'){return 'EOF'};
+     else if (isdigit(stringwithOutSpaces[0]))
+     /*
      If at the end of the current line (how do you check for that?),
      we should call get source line.  If at the EOF (end of file) we should
      set the character ch to EOF and leave the function.
@@ -163,7 +164,7 @@ static char *get_char(char stringwithOutSpaces[])
 }
 static void skip_blanks(char stringwithspaces[])
 {
-
+    
     
     
     //char testString[]="   adfaf";
@@ -191,13 +192,13 @@ static void skip_comment(char stringwithcomment[])
      */
     
     /*
-    char stringwithoutcomment[];
+     char stringwithoutcomment[];
      for(i = 0; i < strlen(stringwithcomment) - 2; i++)
      {
-         if(stringwithcomment[i] == '/' && stringwithcomment[i+1] == '/')
-             stringwithoutcomment[i] = '\0';
-         else
-             stringwithoutcomment[i] = stringwithcomment[i];
+     if(stringwithcomment[i] == '/' && stringwithcomment[i+1] == '/')
+     stringwithoutcomment[i] = '\0';
+     else
+     stringwithoutcomment[i] = stringwithcomment[i];
      }
      return stringwithoutcomment;
      */
@@ -208,12 +209,12 @@ static void skip_comment(char stringwithcomment[])
         for(i = 0; stringwithcomment[i]!='}' || stringwithcomment[i]!='\n'; i++)
         {}
         strcpy(stringwithcomment,stringwithcomment[i]);
-    
+        
     }
     
-     
+    
 }
-static char *get_word(char stringwithuppercase[])
+static void get_word(char stringwithuppercase[], char resultWord[])
 {
     /*
      Write some code to Extract the word
@@ -225,73 +226,82 @@ static char *get_word(char stringwithuppercase[])
      Write some code to Check if the word is a reserved word.
      if it is not a reserved word its an identifier.
      */
+	int i;
+	for( i=0; stringwithuppercase[i]!=' ';i++ )
+	{
+		resultWord[i]=stringwithuppercase[i];
+	}
+	resultWord[i+1]='\0';
+	downshit(resultWord);
+    
 }
-static Token *get_number(char stringnum[])
+static void get_number(char stringnum[])
 {
     /*
      Write some code to Extract the number and convert it to a literal number.
      */
-    int numlength = strlen(stringnum);
-    int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
-    char currentchar;
+    // int numlength = strlen(stringnum);
+    // int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
+    // char currentchar;
     
-    Token addtoken = new Token; // create new NUMBER Token
-    enum TokenCode settokencode = NUMBER;
-    enum LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
-    addtoken.tokencode = settokencode;             // with default as integer
-    addtoken.LiteralValue = stringnum;
-    int i;
-    while(i=0; i<numlength; i++)
-    {
-        currentchar = stringnum[i];
-        if(currentchar == 'e' || currentchar == '.') // check for real number
-        {
-            enum LiteralType setliteraltype = REAL_LIT;
-            i = i + numlength; // exits while loop
-        }
-    }
-    addtoken.typeOfLiteral = setliteraltype;
-    return addtoken;
+    // Token addtoken = malloc(sizeof(Token)); // create new NUMBER Token
+    // enum TokenCode settokencode = NUMBER;
+    //enum LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
+    //addtoken.tokenCode = settokencode;             // with default as integer
+    //addtoken.LiteralValue = stringnum;
+    // int i;
+    // while(i=0; i<numlength; i++)
+    // {
+    //     currentchar = stringnum[i];
+    //    if(currentchar == 'e' || currentchar == '.') // check for real number
+    //    {
+    //        enum LiteralType setliteraltype = REAL_LIT;
+    //        i = i + numlength; // exits while loop
+    //    }
+    // }
+    // addtoken.typeOfLiteral = setliteraltype;
+    // return addtoken;
 }
-static Token *get_string(char stringwithquotes[])
+static void get_string(char stringwithquotes[])
 {
     /*
      Write some code to Extract the string
      */
-    Token addstring = malloc(sizeof(addstring)); // create new STRING Token
-    enum LiteralType setliteraltype = STRING_LIT;
-    enum TokenCode settokencode = STRING;
-    addstring.typeOfLiteral = setliteraltype;
-    addstring.tokenCode = settokencode;
+    // Token addstring = malloc(sizeof(addstring)); // create new STRING Token
+    // enum LiteralType setliteraltype = STRING_LIT;
+    // enum TokenCode settokencode = STRING;
+    // addstring.typeOfLiteral = setliteraltype;
+    // addstring.tokenCode = settokencode;
     
-    char stringwithoutquotes[strlen(stringwithquotes)-2];
-    for(i = 0; i < strlen(stringwithoutquotes); i++)
-    {
-        stringwithoutquotes[i] = stringwithoutquotes[i+1];
-    }
-    strcpy(addstring.LiteralValue,stringwithoutquotes);
-    return addstring;
+    //   char stringwithoutquotes[strlen(stringwithquotes)-2];
+    // for(int i = 0; i < strlen(stringwithoutquotes); i++)
+    //  {
+    //     stringwithoutquotes[i] = stringwithoutquotes[i+1];
+    // }
+    // strcpy(addstring.LiteralValue,stringwithoutquotes);
+    // return addstring;
 }
-static Token *get_special(char stringspecial[])
+static void get_special(char stringspecial[])
 {
     /*
      Write some code to Extract the special token.  Most are single-character
      some are double-character.  Set the token appropriately.
      */
 }
-static char *downshift_word(char stringuppercase[])
+static void downshift_word(char stringuppercase[])
 {
     /*
      Make all of the characters in the incoming word lower case.
      */
-    char stringlowercase[];
+    char stringlowercase[80];
     strcpy(stringlowercase, stringuppercase);
-    for(i=0; i<strlen(stringlowercase); i++)
+    for(int i=0; i<strlen(stringlowercase); i++)
     {
         stringlowercase[i] = tolower(stringlowercase[i]);
     }
-    return stringlowercase;
-     
+    strcpy(stringuppercase,stringlowercase);
+    // return stringlowercase;
+    
 }
 static BOOLEAN is_reserved_word(char stringsearchword[])
 {
