@@ -37,15 +37,17 @@ int main(int argc, const char * argv[])
 }
 void add_token_to_list(Token *list, Token *new_token)
 {
-   Token *current = head;
+   Token *current = list;
+   Token *token_to_add = new_token;
    
    while (current->next != NULL)
    {
        current = current->next;
    }
    
+   
    current->next = malloc(sizeof(Token));
-   current->next->new_token = new_token;
+   current->next->new_token = token_to_add;
    current->next->next = NULL;
     
     // Add new_token to the list knowing that list is a linked list.
