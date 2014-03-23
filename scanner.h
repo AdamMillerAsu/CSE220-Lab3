@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Bryce Holton. All rights reserved.
 //
 
+//ASUTEAM23
+//Adam Miller
+//Mike Burgett
+//Daniel Wong
+
 #ifndef Lab3_scanner_h
 #define Lab3_scanner_h
 

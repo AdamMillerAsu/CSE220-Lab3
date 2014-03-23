@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Bryce Holton. All rights reserved.
 //
 
+//ASUTEAM23
+//Adam Miller
+//Mike Burgett
+//Daniel Wong
+
 #ifndef CSE220_project2_common_h
 #define CSE220_project2_common_h
 
