@@ -381,5 +381,13 @@ static BOOLEAN is_reserved_word(char stringsearchword[])
     /*
      Examine the reserved word table and determine if the function input is a reserved word.
      */
+    for(int c = 0; c < 9; c++)
+        {
+            for(int r = 0; r < 1-0; r++)
+            {
+                if(strcmp(stringsearchword,rw_table[c][r].string == 0))
+                    return TRUE;
+            }
+        }
     return FALSE;
 }
