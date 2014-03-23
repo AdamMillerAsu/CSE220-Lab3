@@ -19,8 +19,8 @@ static char get_char(char*);
 static void skip_comment(char*);
 static void skip_blanks(char*);
 static struct *Token get_word(char*);
-static struct *Token get_number(char*,);
-static struct *Token get_string(char *,);
+static struct *Token get_number(char*);
+static struct *Token get_string(char *);
 static struct *Token get_special(char*);
 static void downshift_word(char*);
 static BOOLEAN is_reserved_word(char*);
@@ -122,7 +122,7 @@ Token* get_token(char *stringtotoken)
         token1 = get_number(source_buffer);
     }
     else
-        token1 = get_special;
+        token1 = get_special(source_buffer);
     
     //3.  Call the appropriate function to deal with the cases in 2.
     strcpy(sourceLine,source_buffer);
