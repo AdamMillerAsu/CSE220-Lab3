@@ -17,8 +17,8 @@
 #include "print.h"
 #include "scanner.h"
 
-void init_scanner(FILE *source_file, char source_name[], char date[])
-BOOLEAN get_source_line(char source_buffer[])
+void init_scanner(FILE *source_file, char source_name[], char date[]);
+BOOLEAN get_source_line(char source_buffer[]);
 void quit_scanner(FILE *src_file, Token *list);
 void add_token_to_list(Token *list, Token *new_token);
 char source_buffer[80];
