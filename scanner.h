@@ -20,7 +20,7 @@
 void init_scanner(FILE *, char[], char[]);
 Token* get_token(char*);
 static char get_char(char[]);
-BOOLEAN get)source_line(char[]);
+BOOLEAN get_source_line(char[]);
 void skip_comment(char[]);
 void skip_blanks(char[]);
 static struct Token* get_word(char[], Token*);
