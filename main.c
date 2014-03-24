@@ -17,6 +17,7 @@
 #include "print.h"
 #include "scanner.h"
 
+FILE *init_lister(const char *name, char source_file_name[], char dte[]);
 void init_scanner(FILE *source_file, char source_name[], char date[]);
 BOOLEAN get_source_line(char source_buffer[]);
 void quit_scanner(FILE *src_file, Token *list);
@@ -100,6 +101,17 @@ void quit_scanner(FILE *src_file, Token *list)
     //write code to free all of the memory for the token list
 
     fclose(src_file);
+}
+FILE *init_lister(const char *name, char source_file_name[], char dte[])
+{
+    time_t timer;
+    FILE *file;
+    
+    strcpy(source_file_name, name);
+    file = fopen(source_file_name, "r");
+    time(&timer);
+    strcpy(dte, asctime(localtime(&timer)));
+    return file;
 }
 void init_scanner(FILE *source_file, char source_name[], char date[])
 {
