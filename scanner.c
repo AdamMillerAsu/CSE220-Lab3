@@ -17,7 +17,6 @@
  return types for functions with ???.
  ******************/
 
-static char get_char(char[]);
 void skip_comment(char[]);
 void skip_blanks(char[]);
 static struct Token* get_word(char[], struct Token*);
@@ -58,7 +57,6 @@ Token* get_token(char *stringtotoken)
     char ch = source_buffer[0]; //This can be the current character you are examining during scanning.
     int chint = (int)ch;
     char token_string[MAX_TOKEN_STRING_LENGTH]; //Store your token here as you build it.
-    char *token_ptr =token_string; //write some code to point this to the beginning of token_string
     
     //if(sourceline[0]=='\n');
     //{get_source_line(source_buffer);}
@@ -86,34 +84,9 @@ Token* get_token(char *stringtotoken)
     
     //3.  Call the appropriate function to deal with the cases in 2.
     strcpy(sourceLine,source_buffer);
-    return &token1; //What should be returned here?
+    return token1; //What should be returned here?
 }
-static char get_char(char stringwithOutSpaces[])
-{
-    char returnchar;
-    if(sourceLine[0]=='\n')
-    {
-        get_source_line(stringwithOutSpaces);
-    }
-    skip_blanks(stringwithOutSpaces);
-    skip_comment(stringwithOutSpaces);
-    returnchar=stringwithOutSpaces[0];
-    return returnchar;
-    /*if(stringwithOutSpaces[0]=='\n')
-     {}
-     }
-     else if (stringwithOutSpaces[0]=='EOF'){return 'EOF'};
-     else if (isdigit(stringwithOutSpaces[0]))
-     /*
-     If at the end of the current line (how do you check for that?),
-     we should call get source line.  If at the EOF (end of file) we should
-     set the character ch to EOF and leave the function.
-     */
-    
-    /*
-     Write some code to set the character ch to the next character in the buffer
-     */
-}
+
 void skip_blanks(char stringwithspaces[])
 {
     
@@ -167,7 +140,7 @@ static struct Token* get_word(char stringwithuppercase[], struct Token *addtoken
      Write some code to Check if the word is a reserved word.
      if it is not a reserved word its an identifier.
      */ int settokencode;
-        LiteralType setliteraltype;
+        LiteralType setliteraltype = STRING_LIT;
 		int i,j;
         char stringwithoutuppercase[80];
         strcpy(stringwithoutuppercase, stringwithuppercase);
@@ -184,6 +157,7 @@ static struct Token* get_word(char stringwithuppercase[], struct Token *addtoken
             }
         }
         addtoken->tokenCode = settokencode;
+        addtoken->typeOfLiteral = setliteraltype;
         strcpy((addtoken->LiteralValue),stringwithoutuppercase);
         return addtoken;
 }
@@ -199,7 +173,6 @@ static struct Token* get_number(char stringnum[], struct Token *addtoken)
      Write some code to Extract the number and convert it to a literal number.
      */
     int numlength = strlen(stringnum);
-    int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
     char currentchar;
     int i;
     TokenCode settokencode = NUMBER;
@@ -214,7 +187,6 @@ static struct Token* get_number(char stringnum[], struct Token *addtoken)
         {
             LiteralType setliteraltype = REAL_LIT;
             i = i + numlength; // exits while loop
-            realorint=1;
         }
         
     }
