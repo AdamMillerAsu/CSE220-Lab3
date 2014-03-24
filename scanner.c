@@ -43,25 +43,6 @@ const RwStruct rw_table[9][10] = {
 };
 
 
-BOOLEAN get_source_line(char source_buffer[])
-{
-    char print_buffer[MAX_SOURCE_LINE_LENGTH + 9];
-    //    char source_buffer[MAX_SOURCE_LINE_LENGTH];  //I've moved this to a function parameter.  Why did I do that?
-    static int line_number = 0;
-    
-    if (fgets(source_buffer, MAX_SOURCE_LINE_LENGTH, src_file) != NULL)
-    {
-        ++line_number;
-        sprintf(print_buffer, "%4d: %s", line_number, source_buffer);
-        print_line(print_buffer, src_name, todays_date);
-        //strcpy(sourceline,source_buffer);
-        return (TRUE);
-    }
-    else
-    {
-        return (FALSE);
-    }
-}
 Token* get_token(char *stringtotoken)
 {
     char source_buffer[MAX_TOKEN_STRING_LENGTH];
