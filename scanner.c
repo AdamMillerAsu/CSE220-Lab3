@@ -24,16 +24,6 @@ typedef enum
 }
 CharCode;
 
-/*********************
- Static Variables for Scanner
- Must be initialized in the init_scanner function.
- *********************/
-static FILE *src_file;
-static char src_name[MAX_FILE_NAME_LENGTH];
-static char todays_date[DATE_STRING_LENGTH];
-//static CharCode char_table[256];  // The character table
-//char sourceline[MAX_TOKEN_STRING_LENGTH];
-
 typedef struct
 {
     char *string;
@@ -52,19 +42,7 @@ const RwStruct rw_table[9][10] = {
     {{"procedure", PROCEDURE},{NULL,0}}  // Reserved words of size 9
 };
 
-void init_scanner(FILE *source_file, char source_name[], char date[])
-{
-    src_file = source_file;
-    strcpy(src_name, source_name);
-    strcpy(todays_date, date);
-    
-    /*******************
-     initialize character table, this table is useful for identifying what type of character
-     we are looking at by setting our array up to be a copy the ascii table.  Since C thinks of
-     a char as like an int you can use ch in get_token as an index into the table.
-     *******************/
-    
-}
+
 BOOLEAN get_source_line(char source_buffer[])
 {
     char print_buffer[MAX_SOURCE_LINE_LENGTH + 9];
