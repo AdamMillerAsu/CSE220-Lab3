@@ -17,6 +17,15 @@
  return types for functions with ???.
  ******************/
 
+static char get_char(char[]);
+void skip_comment(char[]);
+void skip_blanks(char[]);
+static struct Token* get_word(char[], struct Token*);
+static struct Token* get_number(char[], struct Token*);
+static struct Token* get_string(char[], struct Token*);
+static struct Token* get_special(char[], struct Token*);
+static void downshift_word(char[]);
+static BOOLEAN is_reserved_word(char[]);
 
 typedef enum
 {
