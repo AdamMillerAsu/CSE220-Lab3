@@ -17,7 +17,8 @@
 #include "print.h"
 #include "scanner.h"
 
-FILE *init_lister(const char *name, char source_file_name[], char dte[]);
+void init_scanner(FILE *source_file, char source_name[], char date[])
+BOOLEAN get_source_line(char source_buffer[])
 void quit_scanner(FILE *src_file, Token *list);
 void add_token_to_list(Token *list, Token *new_token);
 char source_buffer[80];
@@ -97,15 +98,34 @@ void quit_scanner(FILE *src_file, Token *list)
 
     fclose(src_file);
 }
-FILE *init_lister(const char *name, char source_file_name[], char dte[])
+void init_scanner(FILE *source_file, char source_name[], char date[])
 {
-    time_t timer;
-    FILE *file;
+    src_file = source_file;
+    strcpy(src_name, source_name);
+    strcpy(todays_date, date);
     
-    strcpy(source_file_name, name);
-    file = fopen(source_file_name, "r");
-    time(&timer);
-    strcpy(dte, asctime(localtime(&timer)));
-    return file;
+    /*******************
+     initialize character table, this table is useful for identifying what type of character 
+     we are looking at by setting our array up to be a copy the ascii table.  Since C thinks of 
+     a char as like an int you can use ch in get_token as an index into the table.
+     *******************/
+    
 }
-
+BOOLEAN get_source_line(char source_buffer[])
+{
+    char print_buffer[MAX_SOURCE_LINE_LENGTH + 9];
+//    char source_buffer[MAX_SOURCE_LINE_LENGTH];  //I've moved this to a function parameter.  Why did I do that?
+    static int line_number = 0;
+    
+    if (fgets(source_buffer, MAX_SOURCE_LINE_LENGTH, src_file) != NULL)
+    {
+        ++line_number;
+        sprintf(print_buffer, "%4d: %s", line_number, source_buffer);
+        print_line(print_buffer, src_name, todays_date);
+        return (TRUE);
+    }
+    else
+    {
+        return (FALSE);
+    }
+}
