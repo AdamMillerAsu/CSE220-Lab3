@@ -22,6 +22,9 @@ BOOLEAN get_source_line(char source_buffer[]);
 void quit_scanner(FILE *src_file, Token *list);
 void add_token_to_list(Token *list, Token *new_token);
 char source_buffer[80];
+static FILE *src_file;
+static char src_name[MAX_FILE_NAME_LENGTH];
+static char todays_date[DATE_STRING_LENGTH];
 char wordToken[80];
 
 int main(int argc, const char * argv[])
