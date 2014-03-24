@@ -10,21 +10,13 @@
 #include "scanner.h"
 #include <ctype.h>
 
+
 /*******************
  Static functions needed for the scanner
  You need to design the proper parameter list and
  return types for functions with ???.
  ******************/
-static char get_char(char[]);
-static void skip_comment(char[]);
-static void skip_blanks(char[]);
-static struct Token* get_word(char[], struct *Token);
-static struct Token* get_number(char[], struct *Token);
-static struct Token* get_string(char[], struct *Token);
-static struct Token* get_special(char[], struct *Token);
-static void downshift_word(char[]);
-static BOOLEAN is_reserved_word(char[]);
-char sourceLine[MAX_TOKEN_STRING_LENGTH];
+
 
 typedef enum
 {
@@ -103,8 +95,8 @@ Token* get_token(char *stringtotoken)
     //if(sourceline[0]=='\n');
     //{get_source_line(source_buffer);}
     
-    
-    struct Token token1 = malloc(sizeof(token1));
+    //struct stack * newptr=(struct stack*)malloc(sizeof(struct stack));
+    struct Token * token1 = (struct Token*)malloc(sizeof(Token));
     //???;  //I am missing the most important variable in the function, what is it?  Hint: what should I return?
     
     //2.  figure out which case you are dealing with LETTER, DIGIT, QUOTE, EOF, or special, by examining ch
@@ -154,7 +146,7 @@ static char get_char(char stringwithOutSpaces[])
      Write some code to set the character ch to the next character in the buffer
      */
 }
-static void skip_blanks(char stringwithspaces[])
+void skip_blanks(char stringwithspaces[])
 {
     
     char *str=stringwithspaces;
@@ -165,7 +157,7 @@ static void skip_blanks(char stringwithspaces[])
     str=str+i;
     strcpy(stringwithspaces,str);
 }
-static void skip_comment(char stringwithcomment[])
+void skip_comment(char stringwithcomment[])
 {
     /*
      Write some code to skip past the comments in the program and return a pointer
@@ -189,7 +181,7 @@ static void skip_comment(char stringwithcomment[])
         int i;
         for(i = 0; stringwithcomment[i]!='}' || stringwithcomment[i]!='\n'; i++)
         {}
-        strcpy(stringwithcomment,stringwithcomment[i]);
+        strcpy(stringwithcomment,&stringwithcomment[i]);
         
     }
     
@@ -206,24 +198,25 @@ static struct Token* get_word(char stringwithuppercase[], struct Token *addtoken
     /*
      Write some code to Check if the word is a reserved word.
      if it is not a reserved word its an identifier.
-     */
-        char stringwithoutuppercase[];
-        strcpy(stringwithoutuppercase))
-	downshift_word(stringwithoutuppercase);
-        TokenCode settokencode;
+     */ int settokencode;
         LiteralType setliteraltype;
+		int i,j;
+        char stringwithoutuppercase[80];
+        strcpy(stringwithoutuppercase, stringwithuppercase);
+	downshift_word(stringwithoutuppercase);
+       
     
-        int i,j;
-        for(i = 0; i < 9; i++)
+       // int i,j;
+        for (i = 0; i < 9; i++)
         {
             for(j = 0; j < 1-0; j++)
             {
-                if(strcmp(stringwithoutuppercase,rw_table[i][j].string == 0))
+                if(strcmp(stringwithoutuppercase,rw_table[i][j].string) == 0)
                     settokencode = rw_table[i][j].token_code;
             }
         }
-        addtoken.tokenCode = sttokencode;
-        addtoken.LiteralValue = stringwithoutuppercase;
+        addtoken->tokenCode = settokencode;
+        strcpy((addtoken->LiteralValue),stringwithoutuppercase);
         return addtoken;
 }
 static struct Token* get_number(char stringnum[], struct Token *addtoken)
@@ -240,12 +233,12 @@ static struct Token* get_number(char stringnum[], struct Token *addtoken)
     int numlength = strlen(stringnum);
     int realorint = 0; // 0 if stringnum is an integer, 1 if it is a real number
     char currentchar;
-    
+    int i;
     TokenCode settokencode = NUMBER;
     LiteralType setliteraltype = INTEGER_LIT; // initialize LiteralType
-    addtoken.tokenCode = settokencode;             // with default as integer
-    addtoken.LiteralValue = stringnum;
-    int i;
+    addtoken->tokenCode = settokencode;             // with default as integer
+    strcpy(addtoken->LiteralValue, stringnum);
+    
     for(i=0; i<numlength; i++)
     {
         currentchar = stringnum[i];
@@ -257,29 +250,31 @@ static struct Token* get_number(char stringnum[], struct Token *addtoken)
         }
         
     }
-    addtoken.typeOfLiteral = setliteraltype;
-    return addToken;
+    addtoken->typeOfLiteral = setliteraltype;
+    return addtoken;
     
     
     
 }
 static struct Token* get_string(char stringwithquotes[],struct Token *addstring)
 {
+	char stringwithoutquotes[80];
+    int i;
     /*
      Write some code to Extract the string
      */
     LiteralType setliteraltype = STRING_LIT;
     TokenCode settokencode = STRING;
-    addstring.typeOfLiteral = setliteraltype;
-    addstring.tokenCode = settokencode;
+    addstring->typeOfLiteral = setliteraltype;
+    addstring->tokenCode = settokencode;
+    //int strl = strlen(stringwithquotes)-2;
     
-    char stringwithoutquotes[strlen(stringwithquotes)-2];
-    int i;
     for(i = 0; i < strlen(stringwithoutquotes); i++)
     {
         stringwithoutquotes[i] = stringwithoutquotes[i+1];
     }
-    strcpy(addstring.LiteralValue,stringwithoutquotes);
+	stringwithoutquotes[i+1]='\0';
+    strcpy(addstring->LiteralValue,stringwithoutquotes);
     return addstring;
  }
 
@@ -315,7 +310,7 @@ static struct Token* get_special(char stringspecial[], struct Token *addtoken)
             settokencode = RBRACKET;
             break;
         case 58:
-            if(stringseachword[1] == '=')
+            if(stringspecial[1] == '=')
                 settokencode = COLONEQUAL;
             else
                 settokencode = COLON;
@@ -324,22 +319,22 @@ static struct Token* get_special(char stringspecial[], struct Token *addtoken)
             settokencode = SEMICOLON;
             break;
         case 60:
-            if(stringsearchword[1] == '=')
+            if(stringspecial[1] == '=')
                 settokencode = LE;
             else
                 settokencode = LT;
             break;
         case 62:
-            if(stringsearchword[1] == '=')
+            if(stringspecial[1] == '=')
                 settokencode = GE;
             else
                 settokencode = GT;
-            break
+            break;
         case 44:
             settokencode = COMMA;
             break;
         case 46:
-            if(stringsearchword[1] == '.')
+            if(stringspecial[1] == '.')
                 settokencode = DOTDOT;
             else
                 settokencode = PERIOD;
@@ -348,18 +343,19 @@ static struct Token* get_special(char stringspecial[], struct Token *addtoken)
             settokencode = SLASH;
             break;
     }
-    addtoken.tokenCode = settokencode;
-    addtoken.LiteralValue = stringspecial;
-    retun addtoken; 
+    addtoken->tokenCode = settokencode;
+    strcpy(addtoken->LiteralValue, stringspecial);
+    return addtoken; 
 }
 static void downshift_word(char stringuppercase[])
 {
     /*
      Make all of the characters in the incoming word lower case.
      */
+	int i;
     char stringlowercase[80];
     strcpy(stringlowercase, stringuppercase);
-    int i;
+    
     for(i=0; i<strlen(stringlowercase); i++)
     {
         stringlowercase[i] = tolower(stringlowercase[i]);
@@ -374,11 +370,14 @@ static BOOLEAN is_reserved_word(char stringsearchword[])
      Examine the reserved word table and determine if the function input is a reserved word.
      */
     int i,j;
+	//char * strings;
     for(i = 0; i < 9; i++)
-        {
+	        {
             for(j = 0; j < 1-0; j++)
             {
-                if(strcmp(stringsearchword,rw_table[i][j].string == 0))
+
+				//strings=rw_table[i][j]->string;
+                if(strcmp(stringsearchword,(rw_table[i][j].string)) == 0)
                     return TRUE;
             }
         }

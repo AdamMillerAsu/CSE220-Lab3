@@ -1,12 +1,12 @@
 //
-//  main.c
+//  main.c 
 //  Lab3
 //
 //  Created by Bryce Holton.
 //  Copyright (c) 2014 Bryce Holton. All rights reserved.
 //
 
-//ASUTEAM23
+//ASUTEAM23////////
 //Adam Miller
 //Mike Burgett
 //Daniel Wong
@@ -25,6 +25,7 @@ char wordToken[80];
 
 int main(int argc, const char * argv[])
 {
+	int i;
     Token *token;
     Token *token_list; //This needs to be implemented as a linked list in scanner.h.
     char source_name[MAX_FILE_NAME_LENGTH];
@@ -42,7 +43,7 @@ int main(int argc, const char * argv[])
         }
         
         
-        int i;
+        
         for(i=0;source_buffer[i]!=' ';++i)
         {
             wordToken[i]=source_buffer[i];
@@ -58,7 +59,7 @@ int main(int argc, const char * argv[])
             add_token_to_list(token_list, token);
             print_token(token);
     	}
-    	while (token != ".");//What is the sentinal value that ends this loop?
+    	while (token != NULL);//What is the sentinal value that ends this loop?
         
     }while(wordToken[0]!=' ' || wordToken[0]!='eof' || wordToken[0]!='.');
     
@@ -75,9 +76,9 @@ void add_token_to_list(Token *list, Token *new_token)
        current = current->next;
    }
    
-   
-   current->next = malloc(sizeof(Token));
-   current->next->new_token = token_to_add;
+   //struct Token * token1 = (struct Token*)malloc(sizeof(Token));
+   current->next =(struct Token*) malloc(sizeof(Token));
+   current->next= token_to_add;
    current->next->next = NULL;
     
     // Add new_token to the list knowing that list is a linked list.

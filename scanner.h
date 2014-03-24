@@ -17,7 +17,17 @@
 #include "common.h"
 #include "print.h"
 
-void init_scanner();
-Token* get_token();
+void init_scanner(FILE *, char[], char[]);
+Token* get_token(char*);
+static char get_char(char[]);
+void skip_comment(char[]);
+void skip_blanks(char[]);
+static struct Token* get_word(char[], Token*);
+static struct Token* get_number(char[],  Token*);
+static struct Token* get_string(char[],  Token*);
+static struct Token* get_special(char[], Token*);
+static void downshift_word(char[]);
+static BOOLEAN is_reserved_word(char[]);
+char sourceLine[MAX_TOKEN_STRING_LENGTH];
 
 #endif
