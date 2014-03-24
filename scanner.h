@@ -17,11 +17,9 @@
 #include "common.h"
 #include "print.h"
 
-void init_scanner(FILE *, char[], char[]);
 Token* get_token(char*);
 BOOLEAN get_source_line(char[]);
 void skip_comment(char[]);
 void skip_blanks(char[]);
-char sourceLine[MAX_TOKEN_STRING_LENGTH];
 
 #endif
